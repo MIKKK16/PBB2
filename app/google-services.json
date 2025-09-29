@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "955541121561",
+    "project_id": "david-8545e",
+    "storage_bucket": "david-8545e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955541121561:android:f88bad4eb540898ff0d888",
+        "android_client_info": {
+          "package_name": "com.example.notifikasi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAE4XrKCKXm5qIUF_qR-HECEn1MbMoRueE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
