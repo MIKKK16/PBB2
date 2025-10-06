@@ -28,3 +28,14 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:contentDescription="native to create Text"
+        android:padding="20dp"
+        android:layout_margin="20dp"
+        android:src=""
+
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        />
+
+    </RelativeLayout>
