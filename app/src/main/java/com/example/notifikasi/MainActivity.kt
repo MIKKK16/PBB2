@@ -1,5 +1,6 @@
 package com.example.notifikasi
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -20,29 +21,35 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityMainBinding
+class  MainActivity : AppCompatActivity() {
+    // 1. buat binding dari main activity
+    private lateinit var binding: ActivityMainBinding
     private lateinit var credentialManager: CredentialManager
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // 2. Inisiasi Binding
         binding = ActivityMainBinding.inflate(layoutInflater)
+        // 3. set content dari binding
         setContentView(binding.root)
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         credentialManager = CredentialManager.create(this)
         auth = Firebase.auth
-        registerEvents()
+
+        // 4. Daftarkan event yang diperlukan
+        registerEvent()
     }
-    fun registerEvents() {
-        // 5. daftarkan event ketika button di click
-        binding.button2.setOnClickListener{
+
+    fun registerEvent() {
+        // 5. Daftarkan event ketika button di klik
+        binding.btnLogin.setOnClickListener {
             lifecycleScope.launch {
                 val request = prepareRequest()
                 loginByGoogle(request)
@@ -50,49 +57,69 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun prepareRequest(): GetCredentialRequest {
+        val serverClientId = "955541121561-ek3qcc9n0bd8de608arnpfd6s33k3lea.apps.googleusercontent.com"
 
-        fun prepareRequest(): GetCredentialRequest {
-            val serverClientId =
-                "http://955541121561-ek3qcc9n0bd8de608arnpfd6s33k3lea.apps.googleusercontent.com"
+        val googleIdOption = GetGoogleIdOption
+            .Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(serverClientId)
+            .build()
 
-            val googleOption = GetGoogleIdOption
-                .Builder()
-                .setFilterByAuthorizedAccounts(false)
-                .setServerClientId(serverClientId)
-                .build()
+        val request = GetCredentialRequest
+            .Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
 
-            val request = GetCredentialRequest
-                .Builder()
-                .addCredentialOption(googleOption)
-                .build()
-            return request
+        return request
+    }
+
+    suspend fun loginByGoogle(request: GetCredentialRequest) {
+        try {
+            val result = credentialManager.getCredential(
+                context = this,
+                request = request
+            )
+            val credential = result.credential
+            val idToken = GoogleIdTokenCredential.createFrom(credential.data)
+
+            firebaseLoginCallback(idToken.idToken)
+
+        } catch (exc: NoCredentialException) {
+            Toast.makeText(this, "Login gagal : " + exc.message, Toast.LENGTH_LONG).show()
+        } catch (exc: Exception) {
+            Toast.makeText(this, "Login gagal : " + exc.message, Toast.LENGTH_LONG).show()
         }
-            suspend fun loginByGoogle(request: GetCredentialRequest) {
-                try {
-                    val result = credentialManager.getCredential(
-                        context = this,
-                        request = request
-                    )
-                    val credential = result.credential
-                    val idToken = GoogleIdTokenCredential.createFrom(credential.data)
 
-                    firebaseLoginCallback(idToken.idToken)
-                } catch (exc: NoCredentialException) {
-                    Toast.makeText(this, "Login gagal :" + exc.message, Toast.LENGTH_LONG).show()
-                } catch (exc: Exception) {
-                    Toast.makeText(this, "Login gagal :" + exc.message, Toast.LENGTH_LONG).show()
+    }
 
-                }
-            }
     fun firebaseLoginCallback(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        val credential = GoogleAuthProvider.getCredential(idToken,null)
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(this){task ->
+            .addOnCompleteListener(this) {task ->
                 if (task.isSuccessful) {
                     Toast.makeText(this, "Login Berhasil", Toast.LENGTH_LONG).show()
+                    toTodoPage()
                 } else {
-                    Toast.makeText(this, "Login Gagal", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Login Gagal", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    fun isAuthenticated(): Boolean {
+        return auth.currentUser != null
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (isAuthenticated()) {
+            toTodoPage()
+        }
+    }
+
+    private fun toTodoPage() {
+        val intent = Intent(this, TodoActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

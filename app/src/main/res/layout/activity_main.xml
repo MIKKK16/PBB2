@@ -5,13 +5,52 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E8EBF0"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button2"
+    <!-- Container utama untuk isi yang ditengah -->
+    <LinearLayout
+        android:id="@+id/center_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="155dp"
-        tools:layout_editor_absoluteY="346dp" />
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_note_cartoon"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Judul -->
+        <TextView
+            android:id="@+id/app_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MyToDo Cartoon"
+            android:textColor="#2C3E50"
+            android:textSize="22sp"
+            android:layout_marginBottom="30dp" />
+
+        <!-- Tombol Login -->
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="220dp"
+            android:layout_height="55dp"
+            android:text="Masuk"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#7BB3FF"
+            android:elevation="6dp"
+            app:cornerRadius="20dp" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

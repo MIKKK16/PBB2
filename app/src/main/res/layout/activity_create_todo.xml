@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="#E8EBF0"
+    tools:context=".CreateTodoActivity">
+
+    <!-- Judul Halaman -->
+    <TextView
+        android:id="@+id/titlePage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tambah Catatan"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#2C3E50"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true" />
+
+    <!-- Input Judul -->
+    <EditText
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titlePage"
+        android:hint="Judul Catatan"
+        android:padding="16dp"
+        android:background="@drawable/bg_input_field"
+        android:textColor="#2C3E50"
+        android:textColorHint="#9E9E9E"
+        android:inputType="textCapSentences" />
+
+    <!-- Input Deskripsi -->
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_marginTop="16dp"
+        android:hint="Deskripsi"
+        android:minHeight="100dp"
+        android:gravity="top|start"
+        android:padding="16dp"
+        android:background="@drawable/bg_input_field"
+        android:textColor="#2C3E50"
+        android:textColorHint="#9E9E9E"
+        android:inputType="textMultiLine" />
+
+    <!-- Tombol Simpan -->
+    <Button
+        android:id="@+id/btnCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:layout_marginTop="24dp"
+        android:text="Simpan Catatan"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#6BCB77"
+        android:paddingVertical="12dp" />
+
+</RelativeLayout>
